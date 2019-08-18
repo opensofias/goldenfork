@@ -45,19 +45,13 @@ GoldenScheme.prototype = {
 		}
 	},
 	
-	createSymbol : function(name, parent) {
-		return {
-			type: "symbol",
-			name: name,
-			parent: parent
-		}
-	},
+	createSymbol : (name, parent) => (
+		{type: "symbol", name, parent}
+	),
 	
 	evalExpr: function(expr) {
 		// プリミティブ型ならば値を返す: Returns a value if it is a primitive type
-		if(!(typeof(expr) == "object")) {
-			return expr;
-		}
+		if(!(typeof(expr) == "object")) {return expr;}
 		
 		// シンボルの場合、親を順次捜していく: In the case of a symbol, the parent is searched sequentially.
 		if(expr.type == "symbol") {
@@ -114,12 +108,7 @@ GoldenScheme.prototype = {
 		throw "[evalExpr] Cannot eval expr : " + expr;
 	},
 	
-	aryContains: function(ary, nail) {
-		for(var i=0; i<ary.length; i++) {
-			if(ary[i] == nail) return true;
-		}
-		return false;
-	},
+	aryContains: (ary, nail) => ary.incudes (nail),
 	
 	printDebug : function(str) {
 		var div = document.createElement("div");

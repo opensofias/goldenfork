@@ -2,6 +2,7 @@
 // GoldenScheme can be found here: http://goldenscheme.accelart.jp/
 // License of this source is BSD License.
 
+
 var GoldenScheme = function() {
 	// Get debug DOM
 	this.debugDom = document.getElementById("debug");
@@ -108,7 +109,7 @@ GoldenScheme.prototype = {
 		throw "[evalExpr] Cannot eval expr : " + expr;
 	},
 	
-	aryContains: (ary, nail) => ary.incudes (nail),
+	aryContains: (ary, nail) => ary.includes (nail),
 	
 	printDebug : function(str) {
 		var div = document.createElement("div");

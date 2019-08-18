@@ -8,12 +8,6 @@ var GoldenScheme = function() {
 	if (this.debugDom == null) {
 		this.debugDom = document.body;
 	}
-	// Firefox 以外対策: Countermeasures other than Firefox
-	if(typeof(console) == "undefined") {
-		console = {
-			log: function() {}
-		};
-	}
 };
 GoldenScheme.prototype = {
 	run: function(src) {

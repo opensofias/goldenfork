@@ -1,7 +1,7 @@
 // This is a fork of GoldenScheme for me to play around with
 // GoldenScheme can be found here: http://goldenscheme.accelart.jp/
 // License of this source is BSD License.
-
+'use strict'
 
 var GoldenScheme = function() {
 	// Get debug DOM

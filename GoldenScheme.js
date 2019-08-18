@@ -138,15 +138,15 @@ GoldenScheme.prototype = {
 }
 
 GoldenScheme.prototype.funcs = {
-	"begin" : function(ary) {
+	begin (ary) {
 		return ary[ary.length - 1];
 	},
 	
-	"lambda" : function(ary) {
+	lambda (ary) {
 		return ary;
 	},
 	
-	"define" : function(ary) {
+	define (ary) {
 		console.log("[define]");
 		for(var f = ary; f != null; f = f.parent) {
 			if(!("vars" in f)) continue;
@@ -179,7 +179,7 @@ GoldenScheme.prototype.funcs = {
 		throw "[define] Cannot find vars";
 	},
 	
-	"let" : function(ary) {
+	let (ary) {
 		console.log("[let]");
 		// 変数名と変数の値: Variable name and variable value
 		var varNameList = [];
@@ -206,7 +206,7 @@ GoldenScheme.prototype.funcs = {
 		return result;
 	},
 	
-	"set!" : function(ary) {
+	["set!"] (ary) {
 		console.log("[set!]");
 		for(var f = ary; f != null; f = f.parent) {
 			if("vars" in f && ary[1].type == "symbol" && ary[1].name in f.vars) {
@@ -218,7 +218,7 @@ GoldenScheme.prototype.funcs = {
 		throw "[set!] Illegal Argument";
 	},
 	
-	"if" : function(ary) {
+	if (ary) {
 		if(this.evalExpr(ary[1])) {
 			return this.evalExpr(ary[2]);
 		} else {
@@ -226,27 +226,22 @@ GoldenScheme.prototype.funcs = {
 		}
 	},
 	
-	"cons" : function(ary) {
+	cons (ary) {
 		var cons = [ary[1], ary[2]];
 		cons.type = "cons";
 		return cons;
 	},
 	
-	"quote" : function(ary) {
+	quote (ary) {
 		var quote = ary[1];
 		quote.type = "quote";
 		return quote;
 	},
 	
-	"car" : function(ary) {
-		return ary[1][0];
-	},
+	car: ary => ary[1][0],
+	cdr: ary => ary[1][ary.length - 1],
 	
-	"cdr" : function(ary) {
-		return ary[1][ary.length - 1];
-	},
-	
-	"list" : function(ary) {
+	list: ary => {
 		var top = [];
 		top.type = "cons";
 		var cons = top;
@@ -262,7 +257,7 @@ GoldenScheme.prototype.funcs = {
 		return top;
 	},
 	
-	"+" : function(ary) {
+	"+": ary => {
 		var sum = 0;
 		for(var i=1; i < ary.length; i++) {
 			console.log("[+] ary[i] = " + ary[i]);
@@ -272,7 +267,7 @@ GoldenScheme.prototype.funcs = {
 		return sum;
 	},
 	
-	"-" : function(ary) {
+	"-": ary => {
 		if(ary.length == 1) return -ary[1];
 		var sum = ary[1];
 		for(var i=2; i < ary.length; i++) {
@@ -281,35 +276,13 @@ GoldenScheme.prototype.funcs = {
 		return sum;
 	},
 	
-	"*" : function(ary) {
-		return ary[1] * ary[2];
-	},
+	"*": ary => ary[1] * ary[2],
+	"/": ary => ary[1] / ary[2],
+	expt: ary => ary[1] ** ary[2],
+	"=": ary => ary[1] == ary[2],	
+	"<" : ary => ary[1] < ary[2],
+	">" : ary => ary[1] > ary[2],
+	not : ary => !ary[1],
 	
-	"/" : function(ary) {
-		return ary[1] / ary[2];
-	},
-	
-	"expt" : function(ary) {
-		return Math.pow(ary[1], ary[2]);
-	},
-	
-	"=" : function(ary) {
-		return ary[1] == ary[2];
-	},
-	
-	"<" : function(ary) {
-		return ary[1] < ary[2];
-	},
-	
-	">" : function(ary) {
-		return ary[1] > ary[2];
-	},
-	
-	"not" : function(ary) {
-		return !ary[1];
-	},
-	
-	"display" : function(ary) {
-		this.printDebug(ary[1]);
-	}
+	display (ary) {this.printDebug(ary[1])}
 };

@@ -122,13 +122,8 @@ GoldenScheme.prototype = {
 }
 
 GoldenScheme.prototype.funcs = {
-	begin (ary) {
-		return ary[ary.length - 1];
-	},
-	
-	lambda (ary) {
-		return ary;
-	},
+	begin : ary => ary[ary.length - 1],
+	lambda : ary => ary,
 	
 	define (ary) {
 		console.log("[define]");

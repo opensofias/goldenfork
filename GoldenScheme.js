@@ -11,7 +11,7 @@ var GoldenScheme = function() {
 	}
 };
 GoldenScheme.prototype = {
-	run: function(src) {
+	run (src) {
 		var ary = src.match(/\(|\)|[^\(\)\t\r\n ]+/g);
 
 		// 構文木作成: Syntax tree creation
@@ -25,7 +25,7 @@ GoldenScheme.prototype = {
 		this.printDebug(result);
 	},
 	
-	parse: function(root, ary, pos) {
+	parse (root, ary, pos) {
 		for(var i=pos; i<ary.length; i++) {
 			switch(ary[i]) {
 				case "(":
@@ -50,7 +50,7 @@ GoldenScheme.prototype = {
 		{type: "symbol", name, parent}
 	),
 	
-	evalExpr: function(expr) {
+	evalExpr (expr) {
 		// プリミティブ型ならば値を返す: Returns a value if it is a primitive type
 		if(!(typeof(expr) == "object")) {return expr;}
 		

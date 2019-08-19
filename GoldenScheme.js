@@ -223,7 +223,7 @@ GoldenScheme.prototype.funcs = {
 	},
 	
 	car: ary => ary[1][0],
-	cdr: ary => ary[1][ary.length - 1],
+	cdr: ary => ary[1].slice(1),
 	
 	list: ary => {
 		var top = [];

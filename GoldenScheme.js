@@ -14,14 +14,14 @@ GoldenScheme.prototype = {
 	run (src) {
 		var ary = src.match(/\(|\)|[^\(\)\t\r\n ]+/g);
 
-		// 構文木作成: Syntax tree creation
+		// Syntax tree creation
 		var tree = [];
 		tree.vars = this.funcs;
 		this.parse(tree, ary, 1);
 		
-		// 構文木実行: Syntax tree execution
+		// Syntax tree execution
 		var result = this.evalExpr(tree);
-		// 結果表示: Result representation
+		// Result representation
 		this.printDebug(result);
 	},
 	
@@ -51,10 +51,10 @@ GoldenScheme.prototype = {
 	),
 	
 	evalExpr (expr) {
-		// プリミティブ型ならば値を返す: Returns a value if it is a primitive type
+		// Returns a value if it is a primitive type
 		if(!(typeof(expr) == "object")) {return expr;}
 		
-		// シンボルの場合、親を順次捜していく: In the case of a symbol, the parent is searched sequentially.
+		// In the case of a symbol, the parent is searched sequentially.
 		if(expr.type == "symbol") {
 			for(var f = expr; f != null; f = f.parent) {
 				if("vars" in f && expr.name in f.vars) {
@@ -65,44 +65,44 @@ GoldenScheme.prototype = {
 			throw "[evalExpr] Cannot find symbol : " + expr.name;
 		}
 		
-		// ここまで来たらS式(配列)でないといけない: If it comes so far, it must be an S expression (array)
+		// If it comes so far, it must be an S expression (array)
 		if(!(expr instanceof Array)) {
 			throw "[evalExpr] Illegal type. Must be S-expression.";
 		}
 
-		// 特殊関数は中身を評価しない: Special functions do not evaluate content
+		// Special functions do not evaluate content
 		if(this.aryContains(this.lateEvalFunc, expr[0].name)) {
 			return this.funcs[expr[0].name].call(this, expr);
 		}
 		
-		// 引数を評価: Evaluate argument
+		// Evaluate argument
 		var ary = new Array(expr.length);
 		for(var i=0; i<expr.length; i++) {
 			ary[i] = this.evalExpr(expr[i]);
 		}
 		
 		var execFunc = ary[0];
-		// ネイティブ関数の実行: Native function execution
+		// Native function execution
 		if(typeof(execFunc) == "function") {
 			return execFunc.call(this, ary);
 		}
 		
-		// lambda の実行: Run lambda
+		// Run lambda
 		if(execFunc instanceof Array && execFunc[0].name == "lambda") {
-			// 元の変数を保存
+			// Save original variable
 			var origVars = execFunc.vars;
-			// 変数の初期化
+			// Variable initialization
 			execFunc.vars = {};
 			for(var i=1; i < ary.length; i++) {
 				execFunc.vars[execFunc[1][i - 1].name] = ary[i];
 			}
-			// 実行
+			// Execution
 			var result = null;
 			for(var i=2; i<execFunc.length; i++) {
 				execFunc[i].parent = execFunc;
 				result = this.evalExpr(execFunc[i]);
 			}
-			// 元の変数を復元
+			// Restore original variable
 			execFunc.vars = origVars;
 			return result;
 		}
@@ -139,7 +139,7 @@ GoldenScheme.prototype.funcs = {
 				f.vars[ary[1].name] = ary[2];
 				return ary[1].name;
 			} else if(ary[1] instanceof Array) {
-				// 省略記法: Abbreviation
+				// Abbreviation
 				var arg = [];
 				for(var i=1; i < ary[1].length; i++) {
 					arg.push(ary[1][i]);
@@ -165,14 +165,14 @@ GoldenScheme.prototype.funcs = {
 	
 	let (ary) {
 		console.log("[let]");
-		// 変数名と変数の値: Variable name and variable value
+		// Variable name and variable value
 		var varNameList = [];
 		var varValueList = [];
 		for(var i=0; i < ary[1].length; i++) {
 			varNameList.push(ary[1][i][0]);
 			varValueList.push(ary[1][i][1]);
 		}
-		// 変数の初期化: Variable initialization
+		// Variable initialization
 		if(!("vars" in ary)) {
 			ary.vars = {};
 		}
@@ -181,7 +181,7 @@ GoldenScheme.prototype.funcs = {
 				ary.vars[varNameList[i].name] = varValueList[i];
 			}
 		}
-		// 関数の実行: Function execution
+		// Function execution
 		var result;
 		for(var i=2; i<ary.length; i++) {
 			ary[i].parent = ary;
